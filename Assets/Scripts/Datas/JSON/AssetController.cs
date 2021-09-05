@@ -11,49 +11,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
 
 
 /// <summary>
-/// Please mention your classe use or introduction here (this is  a template class for demo)
+/// load and control datas in the scene 
+/// attached to the GameObject -> ""
 /// </summary>
 
-public class JsonDataManager : MonoBehaviour
+public class AssetController : MonoBehaviour
 {
     #region PRIVATE_VARIABLES
+    [SerializeField]
+    private AssetDatas _assetData;
     #endregion
     #region PUBLIC_VARIABLES
-    public JsonData data;
-    public AssetBundle assetBundle;
-
-
     #endregion
+    void Awake()
+    {
+        _assetData.parsFromJson("json-for-test.json");
+        _assetData.LoadFiles("testbundle");
+    }
     #region MONOBEHAVIOUR_METHODS
     #region MONOBEHAVIOUR_METHODS_PRIVATE
     //Example Method and comment
-    private void Update()
-    {
-    }
+
     #endregion
     #region PMONOBEHAVIOUR_METHODS_PUBLIC
+    public AssetDatas data()
+    {
+        return _assetData;
+    }
     #endregion
     #endregion
     #region NON_MONOBEHAVIOUR_METHODS
     #region NON_MONOBEHAVIOUR_METHODS_PRIVATE
     #endregion
     #region NON_MONOBEHAVIOUR_METHODS_PUBLIC
-    public void ParsJSon(string file)
-    {
-        string path = Path.Combine(Application.streamingAssetsPath, file);
-        string dataAsJson = File.ReadAllText(path);
-
-        data = JsonUtility.FromJson<JsonDataManager>(dataAsJson).data;
-    }
-
-    public void LoadFiles(string file)
-    {
-        assetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, file));
-    }
     #endregion
     #endregion
 }

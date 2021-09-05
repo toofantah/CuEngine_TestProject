@@ -14,11 +14,9 @@ using UnityEngine;
 
 
 /// <summary>
-/// a script to get json datas via structs
-/// attach to gameobject : none - none monobehavior - serializable script
+/// a struct for Position
 /// </summary>
 
-#region STRUCTS
 [System.Serializable]
 public struct Position
 {
@@ -26,46 +24,3 @@ public struct Position
     public Vector3 position;
     public Quaternion rotation;
 }
-#endregion
-
-
-[System.Serializable]
-public class JsonData 
-{
-
-    #region PRIVATE_VARIABLES
-    #endregion
-    #region PUBLIC_VARIABLES
-    public List<string> URL;
-    public List<Position> position;
-    #endregion
-
-
-    #region CONSTRUCTORS
-    public JsonData()
-    {
-        URL = new List<string>();
-        position = new List<Position>();
-
-    }
-    #endregion
-
-    
-    #region MONOBEHAVIOUR_METHODS
-    #region MONOBEHAVIOUR_METHODS_PRIVATE
-        //Example Method and comment
-        private void Update()
-    {
-    }
-    #endregion
-    #region PMONOBEHAVIOUR_METHODS_PUBLIC
-    #endregion
-    #endregion
-    #region NON_MONOBEHAVIOUR_METHODS
-    #region NON_MONOBEHAVIOUR_METHODS_PRIVATE
-    #endregion
-    #region NON_MONOBEHAVIOUR_METHODS_PUBLIC
-    #endregion
-    #endregion
-}
-
