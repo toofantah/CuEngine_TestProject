@@ -344,8 +344,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _assetData:
     data:
-      URL: []
       positions: []
+      URL: []
     assetBundle: {fileID: 0}
 --- !u!4 &2035058146
 Transform:
@@ -460,7 +460,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1297161699176815361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -653,7 +653,8 @@ GameObject:
   - component: {fileID: 1297161699672246952}
   - component: {fileID: 1297161699672246953}
   - component: {fileID: 1297161699672246954}
-  - component: {fileID: 1297161699672246959}
+  - component: {fileID: 1297161699672246957}
+  - component: {fileID: 1297161699672246956}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -661,7 +662,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1297161699672246959
+--- !u!114 &1297161699672246956
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -670,9 +671,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 1297161699672246955}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a7838f0f65059d488215727362919cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f40b68eb94a44342834248fe96c8f2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panels:
+  - panel: {fileID: 1297161699176815364}
+    events: []
+  - panel: {fileID: 1297161698430503876}
+    events: []
+--- !u!114 &1297161699672246957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297161699672246955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 161d5410818d8be458d22b2df6d547ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gridPanel: {fileID: 1297161699176815364}
+  _imagePannel: {fileID: 1297161698430503876}
 --- !u!222 &1297161699726031979
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -753,7 +773,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1297161699672246956}
         m_MethodName: SwitchPanel
         m_Mode: 3
         m_Arguments:
