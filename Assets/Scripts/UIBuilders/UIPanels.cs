@@ -11,91 +11,66 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
+using UnityEngine.UI;
 
 
 /// <summary>
-/// A Script for json data structs.
-/// urls are defined as strings. 
+/// Please mention your classe use or introduction here (this is  a template class for demo)
 /// </summary>
 
-[System.Serializable]
-public class JsonDatas
+public class UIPanels : MonoBehaviour
 {
     #region PRIVATE_VARIABLES
+    private RawImage _image;
+    [SerializeField]
+    private RectTransform _gridPanel;
+    [SerializeField]
+    private RectTransform _imagePannel;
     #endregion
     #region PUBLIC_VARIABLES
-
-    public List<Position> positions;
-    public List<string> URL;
-    
-    
     #endregion
     #region MONOBEHAVIOUR_METHODS
+    void Start()
+    {
+        AssetDatas aData = AssetController.Instance.data();
+        DownloadManager.Instance.DownloadTextures(aData.data.URL.ToArray(), (IMG) => { LoadImages(IMG); });
+    }
+    #region PMONOBEHAVIOUR_METHODS_PUBLIC
+    public void ImageView(RawImage image)
+    {
+        _image.texture = image.texture;
+        UIManager.Instance.SwitchPanel(1);
+    }
+
+    private void LoadImages(Texture2D[] tex)
+    {
+        for (int i = 0; i < tex.Length; i++)
+        {
+            RawImage image = new GameObject(string.Format("Texture [{0}]", i), typeof(RawImage), typeof(Button)).GetComponent<RawImage>();
+            image.rectTransform.SetParent(_gridPanel, false);
+            image.texture = tex[i];
+
+            Button btn = image.GetComponent<Button>();
+            btn.onClick.AddListener(() => ImageView(image));
+        }
+
+        _image = new GameObject("_image", typeof(RawImage)).GetComponent<RawImage>();
+        _image.rectTransform.SetParent(_imagePannel);
+
+    }
+    #endregion
     #region MONOBEHAVIOUR_METHODS_PRIVATE
     //Example Method and comment
     private void Update()
     {
     }
     #endregion
-    #region PMONOBEHAVIOUR_METHODS_PUBLIC
-    #endregion
-    #endregion
-    #region NON_MONOBEHAVIOUR_METHODS
-    #region NON_MONOBEHAVIOUR_METHODS_PRIVATE
-    #endregion
-    #region NON_MONOBEHAVIOUR_METHODS_PUBLIC
-    public JsonDatas()
-    {
-        URL = new List<string>();
-        positions = new List<Position>();
-
-    }
-    #endregion
-    #endregion
-}
-
-/// <summary>
-/// a class for parse datas from json datas and load files to the controller.
-/// </summary>
-
-[System.Serializable]
-public class AssetDatas
-{
-    #region PRIVATE_VARIABLES
-    #endregion
-    #region PUBLIC_VARIABLES
-
-    public JsonDatas data;
-    public AssetBundle assetBundle;
-
-    #endregion
-    #region MONOBEHAVIOUR_METHODS
-    #region MONOBEHAVIOUR_METHODS_PRIVATE
-    //Example Method and comment
-    private void Update()
-    {
-    }
-    #endregion
-    #region PMONOBEHAVIOUR_METHODS_PUBLIC
-    #endregion
+   
     #endregion
     #region NON_MONOBEHAVIOUR_METHODS
     #region NON_MONOBEHAVIOUR_METHODS_PRIVATE
     #endregion
     #region NON_MONOBEHAVIOUR_METHODS_PUBLIC
-    public void parsFromJson(string fileName)
-    {
-        string filePath = Path.Combine(Application.streamingAssetsPath, fileName);
-        Debug.Log(filePath);
-        string dataAsJson = File.ReadAllText(filePath);
-        data = JsonUtility.FromJson<AssetDatas>(dataAsJson).data;
-    }
-
-    public void LoadFiles(string file)
-    {
-        assetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, file));
-    }
     #endregion
     #endregion
 }

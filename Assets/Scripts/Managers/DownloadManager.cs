@@ -11,73 +11,70 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using UnityEngine.Networking;
 
 
 /// <summary>
-/// load and control datas in the scene 
-/// attached to the GameObject -> "Asset_Controller"
+/// A class for downloading streaming İmages from provided URLs
+/// Assigne to GameObject -> "Download_Manager"
 /// </summary>
 
-public class AssetController : MonoBehaviour
+public class DownloadManager : MonoBehaviour
 {
     #region PRIVATE_VARIABLES
-    [SerializeField]
-    private AssetDatas _assetData;
     #endregion
     #region PUBLIC_VARIABLES
-    public static AssetController Instance { get; set; }
+    public static DownloadManager Instance { get; set; }
     #endregion
-    void Awake()
+
+    private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
         }
-
-
-
-        _assetData.parsFromJson("json-for-test.json");
-        _assetData.LoadFiles("testbundle");
     }
     #region MONOBEHAVIOUR_METHODS
+    #region PMONOBEHAVIOUR_METHODS_PUBLIC
+    public void DownloadTextures(string[] URL, Action<Texture2D[]> IMG)
+    {
+        StartCoroutine(DTCoroutine(URL, IMG));
+    }
+    #endregion
     #region MONOBEHAVIOUR_METHODS_PRIVATE
     //Example Method and comment
-
-    #endregion
-    #region PMONOBEHAVIOUR_METHODS_PUBLIC
-
-    public AssetDatas data()
+    private void Update()
     {
-        return _assetData;
-    }
-    /*public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            
-            
-            NewNewJsonTutorial("json-for-test.json");
-        }
     }
 
-
-    public void GetDataFromJSON(string jsonName)
+    private IEnumerator DTCoroutine(string[] URL, Action<Texture2D[]> Images)
     {
-        string filePath = Path.Combine(Application.streamingAssetsPath, jsonName);
-
-        Debug.Log(filePath);
-        string jsonData = File.ReadAllText(filePath);
-        Debug.Log(jsonData);
-        //string jsonString = "";
-        data = JsonUtility.FromJson<JsonData>(jsonData);
-        foreach (string urlInList in data.URL)
+        //define Textures 
+        Texture2D[] texture = new Texture2D[URL.Length];
+        //Download Texture with UnityWebRequest
+        for (int i = 0; i < texture.Length; i++)
         {
-            Debug.Log("URL: " + urlInList);
+            using (UnityWebRequest Req = UnityWebRequestTexture.GetTexture(URL[i]))
+            {
+                yield return Req.SendWebRequest();
+
+                /*if (Req.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.Log(Req.error);
+                }*/
+                if (!Req.isNetworkError)
+                {
+                    DownloadHandlerTexture dhs = Req.downloadHandler as DownloadHandlerTexture;
+                    texture[i] = dhs.texture;
+                }
+            }
         }
 
-    }*/
-
+        Images.Invoke(texture);
+    }
     #endregion
+
     #endregion
     #region NON_MONOBEHAVIOUR_METHODS
     #region NON_MONOBEHAVIOUR_METHODS_PRIVATE

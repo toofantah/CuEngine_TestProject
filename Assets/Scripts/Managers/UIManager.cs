@@ -11,26 +11,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
+using UnityEngine.Events;
 
 
 /// <summary>
-/// A Script for json data structs.
-/// urls are defined as strings. 
+/// Please mention your classe use or introduction here (this is  a template class for demo)
 /// </summary>
 
-[System.Serializable]
-public class JsonDatas
+public class UIManager : MonoBehaviour
 {
     #region PRIVATE_VARIABLES
+    [SerializeField]
+    private List<Panels> panels;
     #endregion
     #region PUBLIC_VARIABLES
-
-    public List<Position> positions;
-    public List<string> URL;
-    
-    
+    public static UIManager Instance { get; set; }
     #endregion
+     void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
     #region MONOBEHAVIOUR_METHODS
     #region MONOBEHAVIOUR_METHODS_PRIVATE
     //Example Method and comment
@@ -39,63 +42,27 @@ public class JsonDatas
     }
     #endregion
     #region PMONOBEHAVIOUR_METHODS_PUBLIC
+    public void SwitchPanel(int Num)
+    {
+        for (int i = 0; i < panels.Count; i++)
+        {
+            if(i== Num)
+            {
+                panels[i].GetPanel().gameObject.SetActive(true);
+            }
+            else
+            {
+                panels[i].GetPanel().gameObject.SetActive(false);
+            }
+        }
+        panels[Num].Event();
+    }
     #endregion
     #endregion
     #region NON_MONOBEHAVIOUR_METHODS
     #region NON_MONOBEHAVIOUR_METHODS_PRIVATE
     #endregion
     #region NON_MONOBEHAVIOUR_METHODS_PUBLIC
-    public JsonDatas()
-    {
-        URL = new List<string>();
-        positions = new List<Position>();
-
-    }
-    #endregion
-    #endregion
-}
-
-/// <summary>
-/// a class for parse datas from json datas and load files to the controller.
-/// </summary>
-
-[System.Serializable]
-public class AssetDatas
-{
-    #region PRIVATE_VARIABLES
-    #endregion
-    #region PUBLIC_VARIABLES
-
-    public JsonDatas data;
-    public AssetBundle assetBundle;
-
-    #endregion
-    #region MONOBEHAVIOUR_METHODS
-    #region MONOBEHAVIOUR_METHODS_PRIVATE
-    //Example Method and comment
-    private void Update()
-    {
-    }
-    #endregion
-    #region PMONOBEHAVIOUR_METHODS_PUBLIC
-    #endregion
-    #endregion
-    #region NON_MONOBEHAVIOUR_METHODS
-    #region NON_MONOBEHAVIOUR_METHODS_PRIVATE
-    #endregion
-    #region NON_MONOBEHAVIOUR_METHODS_PUBLIC
-    public void parsFromJson(string fileName)
-    {
-        string filePath = Path.Combine(Application.streamingAssetsPath, fileName);
-        Debug.Log(filePath);
-        string dataAsJson = File.ReadAllText(filePath);
-        data = JsonUtility.FromJson<AssetDatas>(dataAsJson).data;
-    }
-
-    public void LoadFiles(string file)
-    {
-        assetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, file));
-    }
     #endregion
     #endregion
 }
